@@ -35,7 +35,7 @@ public:
     void set_year_of_admission(int year) { year_of_admission = year; }
     void set_group(string grp) { group = grp; }
     void set_grade_book_number(string grade) { grade_book_number = grade; }
-    void set_ginstitute(string inst) { institute = inst; }
+    void set_institute(string inst) { institute = inst; }
 
     void display() const {
         cout << full_name << "|" << group << " | зач.#" << grade_book_number << endl;
@@ -120,7 +120,7 @@ public:
     }
 };
 
-//пошло говно по трубам, начинаю парсить бд
+
 vector<string> split(const string& s, char delimiter) { // создаем vector<string> функцию split, которая принимает неизменяемую строку s и разделитель delimiter по которому будет резать s
     vector<string> tokens; // создаем вектор tokens который будеи хранить части на которые разбивается строка
     string token; // строка для временного хранения
@@ -130,8 +130,33 @@ vector<string> split(const string& s, char delimiter) { // создаем vector
     }
     return tokens;
 }
-
+//пошло говно по трубам, начинаю парсить бд
 vector<Student> loadStudentsFromFile(const string& filename) {
     vector<Student> students;
+    ifstream file(filename);
+    string line;
+    int lineNumber = 0;
+    while (getline(file, line)) {
+        lineNumber++;
+        if (line.empty()) continue;
+        vector<string> parts = split(line, '|');
 
+        
+            Student student;
+            student.set_full_name(parts[0]);
+            student.set_year_of_admission(stoi(parts[1]));
+            student.set_group(parts[2]);
+            student.set_grade_book_number(parts[3]);
+            student.set_institute(parts[4]);
+
+            students.push_back(student);
+       
+    }
+
+    file.close();
+    return students;
 }
+
+
+
+    
