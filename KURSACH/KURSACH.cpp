@@ -120,12 +120,15 @@ public:
     }
 };
 
-//пошло говно по трубам, начинаю парсить бдшки
-vector<string> split(const string& s, char delimiter) {
-    vector<string> tokens;
-    string token;
-    istringstream tokenStream(s);
-    while (getline(tokenStream, token, delimiter)) {
+//пошло говно по трубам, начинаю парсить бд
+vector<string> split(const string& s, char delimiter) { // создаем vector<string> функцию split, которая принимает неизменяемую строку s и разделитель delimiter по которому будет резать s
+    vector<string> tokens; // создаем вектор tokens который будеи хранить части на которые разбивается строка
+    string token; // строка для временного хранения
+    istringstream tokenStream(s); // создает tokenStream который берет s и делает с помошью istringstream строковый поток ввода 
+    while (getline(tokenStream, token, delimiter)) { // функция getline читающая из потока tokenStream до разделителя delimiter и сохраняющая прочитанное 
+        tokens.push_back(token); // добавляем то что разделилось в конец вектора tokens
+    }
+    return tokens;
 }
 
 vector<Student> loadStudentsFromFile(const string& filename) {
