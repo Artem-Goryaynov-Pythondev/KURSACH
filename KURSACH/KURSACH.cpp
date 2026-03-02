@@ -157,6 +157,52 @@ vector<Student> loadStudentsFromFile(const string& filename) {
     return students;
 }
 
+vector<Book> loadBooksFromFile(const string& filename) {
+    vector<Book> books;
+    ifstream file(filename);
+    string line;
+    int lineNumber = 0;
+    while (getline(file, line)) {
+        lineNumber++;
+        if (line.empty()) continue;
+        vector<string> parts = split(line, '|');
+        
+        Book book;
+        book.set_author(parts[0]);
+        book.set_inventory_number(stoi(parts[1]));
+        book.set_name(parts[2]);
+        book.set_takenBy(parts[3]);
+        book.set_takenDate(parts[4]);
+        book.set_status(parts[5]);
 
+        books.push_back(book);
+    }
+    file.close();
+    return books;
 
+}
+
+vector<Transactions> loadTransactionsFromFile(const string& filename) {
+    vector<Transactions> transactions;
+    ifstream file(filename);
+    string line;
+    int lineNumber = 0;
+    while (getline(file, line)){
+        lineNumber++;
+        if (line.empty()) continue;
+        vector<string> parts = split(line, '|');
+
+        Transactions transaction(
+            parts[0],
+            stoi(parts[1]),
+            parts[2],
+            parts[3],
+            parts[4]);
+
+        transactions.push_back(transaction);
+    }
+    file.close();
+    cout << "Загружено транзакций: " << transactions.size() << endl;
+    return transactions;
+}
     
