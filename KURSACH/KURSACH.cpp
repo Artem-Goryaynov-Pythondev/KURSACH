@@ -56,7 +56,7 @@ private:
 
 public:
     Book() :inventory_number(0) {}
-    Book(string aut, int number, string nam, string tb = "", string td = "", string rd = "", string sta) {
+    Book(string aut, int number, string nam, string tb = "", string td = "", string rd = "", string sta = "") {
         author = aut;
         inventory_number = number;
         name = nam;
@@ -70,6 +70,7 @@ public:
     int get_inventory_number() const { return inventory_number; }
     string get_name() const { return name; }
     string get_takenBy() const { return takenBy; }
+    string get_takenDate() const { return takenDate; }
     string get_returnDate() const { return returnDate; }
     string get_status() const { return status; }
 
@@ -77,7 +78,8 @@ public:
     void set_inventory_number(int num) { inventory_number = num; }
     void set_name(string nam) { name = nam; }
     void set_takenBy(string tb) { takenBy = tb; }
-    void set_takenDate(string td) { takenDate = td; }
+    void set_takenDate(string td) { returnDate = td; }
+    void set_returnDate(string rd) { returnDate = rd; }
     void set_status(string sta) { status = sta; }
 
     void display() const {
@@ -106,7 +108,7 @@ public:
         inventory_number = inv;
         name = nam;
         date = dat;
-        bib = bib_name;
+        bib_name = bib;
     }
 
     string get_type() const { return type; }
@@ -130,7 +132,7 @@ vector<string> split(const string& s, char delimiter) { // создаем vector
     }
     return tokens;
 }
-//пошло говно по трубам, начинаю парсить бд
+
 vector<Student> loadStudentsFromFile(const string& filename) {
     vector<Student> students;
     ifstream file(filename);
@@ -168,13 +170,14 @@ vector<Book> loadBooksFromFile(const string& filename) {
         vector<string> parts = split(line, '|');
         
         Book book;
-        book.set_author(parts[0]);
-        book.set_inventory_number(stoi(parts[1]));
+        book.set_inventory_number(stoi(parts[0]));
+        book.set_author(parts[1]);
         book.set_name(parts[2]);
-        book.set_takenBy(parts[3]);
-        book.set_takenDate(parts[4]);
-        book.set_status(parts[5]);
-
+        book.set_status(parts[3]);
+        book.set_takenBy(parts[4]);
+        book.set_takenDate(parts[5]);
+        book.set_returnDate(parts[6]);
+        
         books.push_back(book);
     }
     file.close();
@@ -206,3 +209,28 @@ vector<Transactions> loadTransactionsFromFile(const string& filename) {
     return transactions;
 }
     
+void findBookByStudent(const vector<Book>& books, const string& studentName) {
+    cout << "Книги на руках у студента " << studentName << " ";
+    bool found = false;
+
+    for (const auto& book : books) {
+        if (book.get_status() == "на руках" && book.get_takenBy() == studentName) {
+            book.display();
+            found = true;
+
+        }
+
+    }
+    if (!found) {
+        cout << "У студента" << studentName << " нет книг на руках";
+
+    }
+}
+
+void findStudentsByBook(const vector<Transactions>& transactions, const string& bookTitle, const vector<Book>& books) {
+    for (const auto& book : books) {
+        if (book.get_name() == name) {
+            inventory_number.push_back(book.get_inventory_number());
+        }
+    }
+}
